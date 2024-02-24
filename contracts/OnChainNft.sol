@@ -5,16 +5,20 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 
-
+/// @title A contract to generate NFTs on-chain
+/// @notice Allows users to mint NFTs with a unique SVG image and tokenURI
 contract OnChainNFT is ERC721URIStorage {
     using Strings for uint256;
     
+    // Counter for the tokenIds
     uint256 private _tokenIds;
 
     constructor() ERC721 ("DevFarunaNFT", "DFN"){
 
     }
 
+    /// @notice Returns the tokenURI for a given tokenID
+    /// @param _tokenId The tokenID of the NFT
     function getTokenURI(uint256 _tokenId) pure public returns (string memory) {
         string memory id = Strings.toString(_tokenId);
         bytes memory dataURI = abi.encodePacked(
@@ -32,6 +36,9 @@ contract OnChainNFT is ERC721URIStorage {
         );
     }
 
+    /// @notice Generates an SVG image for a given tokenID
+    /// @param _tokenId The tokenID of the NFT
+    /// @return The SVG image as a base64 encoded string
     function generateNFT(uint256 _tokenId) pure public returns (string memory) {
         bytes memory svg = abi.encodePacked(
         '<svg id="sw-js-blob-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">',
@@ -50,6 +57,8 @@ contract OnChainNFT is ERC721URIStorage {
         );
     }
 
+    /// @notice Mints an NFT with a unique tokenURI
+    /// @dev Increments the tokenID and mints an NFT with the tokenURI
     function mint() public {
         _tokenIds = _tokenIds + 1;
 
